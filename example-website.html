@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature Warriors African Safaris - Example Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section h2 {
+            color: #333;
+            border-bottom: 3px solid #ff6b35;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .destinations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .destination-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .destination-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .destination-image {
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .destination-content {
+            padding: 20px;
+        }
+        
+        .destination-content h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .destination-content p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            background: #ff6b35;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #e55a2b;
+        }
+        
+        .contact-info {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .contact-info h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .contact-details {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            text-align: center;
+        }
+        
+        .contact-item strong {
+            color: #ff6b35;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .embed-instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .embed-instructions h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+        
+        .code-block {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌍 Nature Warriors African Safaris</h1>
+        <p>Your Gateway to Authentic Tanzanian Adventures</p>
+    </div>
+
+    <div class="content">
+        <div class="section">
+            <h2>Welcome to Tanzania</h2>
+            <p>Experience the magic of Africa with our expertly crafted safari adventures. From the vast plains of the Serengeti to the pristine beaches of Zanzibar, we offer unforgettable journeys that connect you with Tanzania's incredible wildlife, landscapes, and cultures.</p>
+        </div>
+
+        <div class="section">
+            <h2>Our Destinations</h2>
+            <div class="destinations">
+                <div class="destination-card">
+                    <div class="destination-image">🦁 Serengeti</div>
+                    <div class="destination-content">
+                        <h3>Serengeti National Park</h3>
+                        <p>Witness the Great Migration and encounter the Big Five in their natural habitat. Experience the world's most spectacular wildlife show.</p>
+                        <a href="#" class="btn">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="destination-card">
+                    <div class="destination-image">🏔️ Kilimanjaro</div>
+                    <div class="destination-content">
+                        <h3>Mount Kilimanjaro</h3>
+                        <p>Conquer Africa's highest peak with our expert guides. Choose from multiple routes including the popular Machame and Marangu paths.</p>
+                        <a href="#" class="btn">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="destination-card">
+                    <div class="destination-image">🏝️ Zanzibar</div>
+                    <div class="destination-content">
+                        <h3>Zanzibar Island</h3>
+                        <p>Discover the Spice Island's pristine beaches, historic Stone Town, and vibrant culture. Perfect for relaxation after your safari.</p>
+                        <a href="#" class="btn">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Contact Information</h2>
+            <div class="contact-info">
+                <h3>Ready to Start Your Adventure?</h3>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <strong>Phone</strong>
+                        <div>+255 625 691 470</div>
+                        <div>+255 622 127 770</div>
+                    </div>
+                    <div class="contact-item">
+                        <strong>Email</strong>
+                        <div>info@naturewarriorsafricansafaris.co.tz</div>
+                    </div>
+                    <div class="contact-item">
+                        <strong>Location</strong>
+                        <div>Arusha, Tanzania</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="embed-instructions">
+            <h3>💬 Chat Widget Integration</h3>
+            <p>This page includes our interactive chat widget. To add it to your own website, simply include this script tag in your HTML:</p>
+            <div class="code-block">
+&lt;script src="https://safari-chatbot-v2.onrender.com/embed-script.js"&gt;&lt;/script&gt;
+            </div>
+            <p><strong>Features:</strong></p>
+            <ul>
+                <li>✅ Instant customer support</li>
+                <li>✅ Safari package information</li>
+                <li>✅ Booking assistance</li>
+                <li>✅ Contact information</li>
+                <li>✅ Mobile-friendly design</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Chat Widget Embed Script -->
+    <script src="embed-script.js"></script>
+</body>
+</html>

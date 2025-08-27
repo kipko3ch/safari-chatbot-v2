@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Chat Widget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Chat Widget Test</h1>
+        
+        <h3>1. Test API Health Check</h3>
+        <button class="test-button" onclick="testHealth()">Test Health Check</button>
+        <div id="health-result" class="result"></div>
+        
+        <h3>2. Test API Chat Endpoint</h3>
+        <button class="test-button" onclick="testChat()">Test Chat API</button>
+        <div id="chat-result" class="result"></div>
+        
+        <h3>3. Test Frontend Widget</h3>
+        <p>Open <code>chat-widget.html</code> in your browser to test the full widget.</p>
+        
+        <h3>4. Manual API Test</h3>
+        <input type="text" id="test-message" placeholder="Enter test message" style="width: 300px; padding: 8px;">
+        <button class="test-button" onclick="testManual()">Send Test Message</button>
+        <div id="manual-result" class="result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://safari-chatbot-v2.onrender.com';
+        
+        async function testHealth() {
+            const resultDiv = document.getElementById('health-result');
+            resultDiv.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/health`);
+                const data = await response.json();
+                resultDiv.textContent = `✅ Health Check Success!\nStatus: ${response.status}\nResponse: ${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                resultDiv.textContent = `❌ Health Check Failed!\nError: ${error.message}`;
+            }
+        }
+        
+        async function testChat() {
+            const resultDiv = document.getElementById('chat-result');
+            resultDiv.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Hello, what safaris do you offer?'
+                    })
+                });
+                
+                const data = await response.json();
+                resultDiv.textContent = `✅ Chat API Test!\nStatus: ${response.status}\nResponse: ${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                resultDiv.textContent = `❌ Chat API Failed!\nError: ${error.message}`;
+            }
+        }
+        
+        async function testManual() {
+            const message = document.getElementById('test-message').value;
+            const resultDiv = document.getElementById('manual-result');
+            
+            if (!message) {
+                resultDiv.textContent = '❌ Please enter a message first!';
+                return;
+            }
+            
+            resultDiv.textContent = 'Sending...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message
+                    })
+                });
+                
+                const data = await response.json();
+                resultDiv.textContent = `✅ Manual Test Success!\nStatus: ${response.status}\nResponse: ${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                resultDiv.textContent = `❌ Manual Test Failed!\nError: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
