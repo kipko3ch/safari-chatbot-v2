@@ -105,7 +105,8 @@ If someone asks about booking, services, contact info, or destinations, use the 
         "model": "llama-3.1-70b-versatile",
         "messages": messages,
         "temperature": 0.7,
-        "max_tokens": 400
+        "max_tokens": 400,
+        "stream": False
     }
     
     try:
@@ -119,21 +120,30 @@ If someone asks about booking, services, contact info, or destinations, use the 
 def chat():
     """API endpoint for chat requests"""
     try:
+        print("=== Chat endpoint called ===")
+        print(f"API Key available: {bool(GROQ_API_KEY)}")
+        
         # Check if API key is available
         if not GROQ_API_KEY:
+            print("ERROR: API key not configured")
             return jsonify({
                 'error': 'API key not configured',
                 'response': "Sorry, I'm having trouble connecting right now. Please contact us directly at +255625691470 or info@naturewarriorsafricansafaris.co.tz"
             }), 500
         
         data = request.get_json()
+        print(f"Received data: {data}")
+        
         user_message = data.get('message', '')
+        print(f"User message: {user_message}")
         
         if not user_message:
             return jsonify({'error': 'No message provided'}), 400
         
         # Get response from Groq API
+        print("Calling Groq API...")
         response = get_groq_response(user_message)
+        print(f"Groq response: {response}")
         
         return jsonify({
             'response': response,
@@ -142,6 +152,8 @@ def chat():
         
     except Exception as e:
         print(f"Error in chat endpoint: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({
             'error': 'Internal server error',
             'response': "Sorry, I'm having trouble connecting right now. Please contact us directly at +255625691470 or info@naturewarriorsafricansafaris.co.tz"
