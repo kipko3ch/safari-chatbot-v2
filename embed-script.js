@@ -25,18 +25,21 @@
                 <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa;">
                     <!-- Welcome message -->
                     <div style="margin-bottom: 15px;">
-                        <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; font-size: 14px;">
-                            👋 Welcome! I'm here to help you plan your perfect Tanzanian safari. Ask me about our destinations, packages, or booking process.
+                        <div style="background: linear-gradient(135deg, #e3f2fd, #f3e5f5); padding: 15px; border-radius: 12px; font-size: 14px; border-left: 4px solid #ff6b35;">
+                            <div style="font-weight: bold; margin-bottom: 8px; color: #1976d2;">🌟 Welcome to Nature Warriors!</div>
+                            <div>Hi there! I'm your personal safari assistant. I'd love to help you discover the magic of Tanzania! What adventure are you dreaming of today?</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Suggestions -->
-                <div id="quick-suggestions" style="padding: 10px 15px; background: #f8f9fa; border-top: 1px solid #e9ecef;">
+                <div id="quick-suggestions" style="padding: 15px; background: #f8f9fa; border-top: 1px solid #e9ecef;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">💡 Quick questions:</div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 6px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; transition: all 0.2s;">Safari Packages</button>
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 6px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; transition: all 0.2s;">Kilimanjaro Trek</button>
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 6px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; transition: all 0.2s;">Contact Info</button>
+                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">🦁 Serengeti Safari</button>
+                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">🏔️ Kilimanjaro Trek</button>
+                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">🏝️ Zanzibar Beach</button>
+                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">📞 Contact Us</button>
                     </div>
                 </div>
 

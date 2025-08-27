@@ -27,31 +27,31 @@ Nature Warriors African Safaris is your trusted partner for authentic Tanzanian 
 MAIN DESTINATIONS & SERVICES:
 
 1. SERENGETI NATIONAL PARK
-- Great Migration Experience (3 Days/2 Nights) - Witness the world-famous wildebeest migration
+- Great Migration Experience - Witness the world-famous wildebeest migration
 - Best time: July-September for migration
 - Wildlife: Wildebeest, zebras, lions, cheetahs, leopards
 
 2. NGORONGORO CRATER
-- Ngorongoro Crater Tour (1 Day) - Descend into the crater for full-day safari
+- Ngorongoro Crater Tour - Descend into the crater for full-day safari
 - Wildlife: Lions, rhinos, elephants, flamingos, hippos
 
 3. ZANZIBAR ISLAND - Spice Island Paradise
-- Nungwi Beach Retreat (3 Days/2 Nights) - Pristine beaches
-- Stone Town Heritage Tour (Half Day) - UNESCO World Heritage site
-- Zanzibar Spice Tour (Half Day) - Discover exotic spices
-- Dolphin Watching Tour (Half Day) - Swim with dolphins
-- Sunset Dhow Cruise (2 Hours) - Traditional dhow sailing
+- Nungwi Beach Retreat - Pristine beaches
+- Stone Town Heritage Tour - UNESCO World Heritage site
+- Zanzibar Spice Tour - Discover exotic spices
+- Dolphin Watching Tour - Swim with dolphins
+- Sunset Dhow Cruise - Traditional dhow sailing
 
 4. MOUNT KILIMANJARO - Africa's Highest Peak (5,895m)
 Climbing Routes Available:
-- Machame Route "Whiskey Route" (6-7 days) - Most popular, scenic
-- Marangu Route "Coca-Cola Route" (5-6 days) - Cheapest, hut accommodation
-- Lemosho Route (7-8 days) - Premium, stunning views
-- Rongai Route (6-7 days) - Quieter, drier side
+- Machame Route "Whiskey Route" - Most popular, scenic
+- Marangu Route "Coca-Cola Route" - Hut accommodation
+- Lemosho Route - Premium, stunning views
+- Rongai Route - Quieter, drier side
 
 5. SELOUS GAME RESERVE
-- Rufiji River Boat Safari (Half Day) - Unique boat safaris
-- Selous Game Drive (1 Day) - Elephants, lions, wild dogs
+- Rufiji River Boat Safari - Unique boat safaris
+- Selous Game Drive - Elephants, lions, wild dogs
 
 BOOKING PROCESS:
 1. Contact us via phone (+255625691470 or +255622127770) or email (info@naturewarriorsafricansafaris.co.tz)
@@ -79,20 +79,20 @@ def get_groq_response(user_message):
     # System prompt with comprehensive knowledge base
     system_message = {
         "role": "system",
-        "content": f"""You are a helpful assistant for Nature Warriors African Safaris, a Tanzania safari company. Use the following comprehensive knowledge base to answer questions about the company, services, destinations, and booking information.
+        "content": f"""You are a friendly and professional assistant for Nature Warriors African Safaris, a Tanzania safari company. You help potential customers learn about our services and guide them to contact us for bookings and pricing.
 
 {KNOWLEDGE_BASE}
 
-INSTRUCTIONS:
-1. Always answer based on the knowledge base first
-2. For booking questions, provide the exact contact information: +255625691470 | +255622127770 or info@naturewarriorsafricansafaris.co.tz
-3. For service questions, mention specific packages, destinations, and durations
-4. If the question is not covered in the knowledge base, provide a polite general response
-5. Keep answers concise, clear, and professional (2-3 sentences max)
-6. Always be helpful and encouraging about Tanzania safari experiences
-7. Use specific details from the knowledge base like prices, durations, and what's included
+CRITICAL INSTRUCTIONS:
+1. NEVER mention specific prices - always direct people to contact us for pricing
+2. Keep responses friendly, conversational, and concise (2-3 sentences max)
+3. For any booking, pricing, or detailed information requests, provide our contact details
+4. Focus on the experience and what makes us special, not technical details
+5. Use a warm, welcoming tone that makes people excited about Tanzania
+6. If someone asks about costs, say something like "For the best rates and personalized quotes, please contact us directly at +255625691470 or info@naturewarriorsafricansafaris.co.tz"
+7. Always end with an encouraging note about contacting us to start their adventure
 
-If someone asks about booking, services, contact info, or destinations, use the exact information from the knowledge base above."""
+Remember: You're here to create excitement and guide people to contact us, not to provide all the details upfront."""
     }
     
     # Prepare messages with system prompt
@@ -226,18 +226,21 @@ def embed_script():
                 <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa;">
                     <!-- Welcome message -->
                     <div style="margin-bottom: 15px;">
-                        <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; font-size: 14px;">
-                            👋 Welcome! I'm here to help you plan your perfect Tanzanian safari. Ask me about our destinations, packages, or booking process.
+                        <div style="background: linear-gradient(135deg, #e3f2fd, #f3e5f5); padding: 15px; border-radius: 12px; font-size: 14px; border-left: 4px solid #ff6b35;">
+                            <div style="font-weight: bold; margin-bottom: 8px; color: #1976d2;">🌟 Welcome to Nature Warriors!</div>
+                            <div>Hi there! I'm your personal safari assistant. I'd love to help you discover the magic of Tanzania! What adventure are you dreaming of today?</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Suggestions -->
-                <div id="quick-suggestions" style="padding: 10px 15px; background: #f8f9fa; border-top: 1px solid #e9ecef;">
+                <div id="quick-suggestions" style="padding: 15px; background: #f8f9fa; border-top: 1px solid #e9ecef;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">💡 Quick questions:</div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 6px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; transition: all 0.2s;">Safari Packages</button>
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 6px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; transition: all 0.2s;">Kilimanjaro Trek</button>
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 6px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; transition: all 0.2s;">Contact Info</button>
+                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">🦁 Serengeti Safari</button>
+                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">🏔️ Kilimanjaro Trek</button>
+                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">🏝️ Zanzibar Beach</button>
+                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">📞 Contact Us</button>
                     </div>
                 </div>
 
