@@ -226,9 +226,9 @@ def embed_script():
                 <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa;">
                     <!-- Welcome message -->
                     <div style="margin-bottom: 15px;">
-                        <div style="background: linear-gradient(135deg, #e3f2fd, #f3e5f5); padding: 15px; border-radius: 12px; font-size: 14px; border-left: 4px solid #ff6b35;">
-                            <div style="font-weight: bold; margin-bottom: 8px; color: #1976d2;">🌟 Welcome to Nature Warriors!</div>
-                            <div>Hi there! I'm your personal safari assistant. I'd love to help you discover the magic of Tanzania! What adventure are you dreaming of today?</div>
+                        <div style="background: linear-gradient(135deg, #FFE4B5, #F0E68C); padding: 20px; border-radius: 15px; font-size: 15px; border: 2px solid #D2691E; box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);">
+                            <div style="font-weight: bold; margin-bottom: 10px; color: #8B4513; font-size: 16px;">🌟 How can we help you today?</div>
+                            <div style="color: #654321; line-height: 1.5;">Hi there! I'm your personal safari expert, ready to help you plan the adventure of a lifetime in Tanzania! Whether you're dreaming of the Serengeti, Kilimanjaro, or Zanzibar, I'm here to guide you every step of the way. What's calling your name today?</div>
                         </div>
                     </div>
                 </div>

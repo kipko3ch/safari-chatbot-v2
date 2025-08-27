@@ -2,52 +2,53 @@
 (function() {
     // Create and inject the chat widget HTML
     const chatWidgetHTML = `
-        <div id="safari-chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: Arial, sans-serif;">
+        <div id="safari-chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
             <!-- Chat Toggle Button -->
-            <div id="chat-toggle" style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <div id="chat-toggle" style="width: 70px; height: 70px; background: linear-gradient(135deg, #8B4513, #D2691E, #FF8C00); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3); transition: all 0.3s; border: 3px solid #FFF; position: relative; animation: pulse 2s infinite;">
+                <div style="position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #8B4513; font-weight: bold; animation: bounce 1s infinite;">💬</div>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
             </div>
 
             <!-- Chat Window -->
-            <div id="chat-window" style="position: absolute; bottom: 80px; right: 0; width: 350px; height: 500px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); display: none; flex-direction: column; overflow: hidden;">
+            <div id="chat-window" style="position: absolute; bottom: 90px; right: 0; width: 380px; height: 550px; background: linear-gradient(135deg, #FFF8DC, #F5F5DC); border-radius: 20px; box-shadow: 0 12px 40px rgba(139, 69, 19, 0.2); display: none; flex-direction: column; overflow: hidden; border: 2px solid #D2691E;">
                 <!-- Chat Header -->
-                <div style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="background: linear-gradient(135deg, #8B4513, #D2691E, #CD853F); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #FFD700;">
                     <div>
-                        <div style="font-weight: bold; font-size: 16px;">Safari Assistant</div>
-                        <div style="font-size: 12px; opacity: 0.9;">Nature Warriors African Safaris</div>
+                        <div style="font-weight: bold; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">🦁 Safari Expert</div>
+                        <div style="font-size: 13px; opacity: 0.95; margin-top: 2px;">Nature Warriors African Safaris</div>
                     </div>
-                    <div id="chat-close" style="cursor: pointer; font-size: 20px;">×</div>
+                    <div id="chat-close" style="cursor: pointer; font-size: 24px; background: rgba(255,255,255,0.2); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">×</div>
                 </div>
 
                 <!-- Chat Messages -->
-                <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa;">
+                <div id="chat-messages" style="flex: 1; padding: 20px; overflow-y: auto; background: linear-gradient(135deg, #FFF8DC, #F5F5DC);">
                     <!-- Welcome message -->
-                    <div style="margin-bottom: 15px;">
-                        <div style="background: linear-gradient(135deg, #e3f2fd, #f3e5f5); padding: 15px; border-radius: 12px; font-size: 14px; border-left: 4px solid #ff6b35;">
-                            <div style="font-weight: bold; margin-bottom: 8px; color: #1976d2;">🌟 Welcome to Nature Warriors!</div>
-                            <div>Hi there! I'm your personal safari assistant. I'd love to help you discover the magic of Tanzania! What adventure are you dreaming of today?</div>
+                    <div style="margin-bottom: 20px;">
+                        <div style="background: linear-gradient(135deg, #FFE4B5, #F0E68C); padding: 20px; border-radius: 15px; font-size: 15px; border: 2px solid #D2691E; box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);">
+                            <div style="font-weight: bold; margin-bottom: 10px; color: #8B4513; font-size: 16px;">🌟 How can we help you today?</div>
+                            <div style="color: #654321; line-height: 1.5;">Hi there! I'm your personal safari expert, ready to help you plan the adventure of a lifetime in Tanzania! Whether you're dreaming of the Serengeti, Kilimanjaro, or Zanzibar, I'm here to guide you every step of the way. What's calling your name today?</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Suggestions -->
-                <div id="quick-suggestions" style="padding: 15px; background: #f8f9fa; border-top: 1px solid #e9ecef;">
-                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">💡 Quick questions:</div>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">🦁 Serengeti Safari</button>
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">🏔️ Kilimanjaro Trek</button>
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">🏝️ Zanzibar Beach</button>
-                        <button class="suggestion-btn" style="background: white; border: 1px solid #dee2e6; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: all 0.2s;">📞 Contact Us</button>
+                <div id="quick-suggestions" style="padding: 20px; background: linear-gradient(135deg, #F5F5DC, #DEB887); border-top: 2px solid #D2691E;">
+                    <div style="font-size: 13px; color: #8B4513; margin-bottom: 12px; font-weight: bold;">💡 Popular questions:</div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="suggestion-btn" style="background: linear-gradient(135deg, #FFF8DC, #FFE4B5); border: 2px solid #D2691E; padding: 10px 15px; border-radius: 25px; font-size: 13px; cursor: pointer; transition: all 0.3s; color: #8B4513; font-weight: 500; box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);">🦁 Serengeti Safari</button>
+                        <button class="suggestion-btn" style="background: linear-gradient(135deg, #FFF8DC, #FFE4B5); border: 2px solid #D2691E; padding: 10px 15px; border-radius: 25px; font-size: 13px; cursor: pointer; transition: all 0.3s; color: #8B4513; font-weight: 500; box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);">🏔️ Kilimanjaro Trek</button>
+                        <button class="suggestion-btn" style="background: linear-gradient(135deg, #FFF8DC, #FFE4B5); border: 2px solid #D2691E; padding: 10px 15px; border-radius: 25px; font-size: 13px; cursor: pointer; transition: all 0.3s; color: #8B4513; font-weight: 500; box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);">🏝️ Zanzibar Beach</button>
+                        <button class="suggestion-btn" style="background: linear-gradient(135deg, #FFF8DC, #FFE4B5); border: 2px solid #D2691E; padding: 10px 15px; border-radius: 25px; font-size: 13px; cursor: pointer; transition: all 0.3s; color: #8B4513; font-weight: 500; box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);">📞 Chat with us</button>
                     </div>
                 </div>
 
                 <!-- Chat Input -->
-                <div style="padding: 15px; background: white; border-top: 1px solid #e9ecef;">
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="chat-input" placeholder="Type your message..." style="flex: 1; padding: 10px; border: 1px solid #dee2e6; border-radius: 20px; outline: none; font-size: 14px;">
-                        <button id="chat-send" style="background: #ff6b35; color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-size: 14px;">Send</button>
+                <div style="padding: 20px; background: linear-gradient(135deg, #F5F5DC, #DEB887); border-top: 2px solid #D2691E;">
+                    <div style="display: flex; gap: 12px;">
+                        <input type="text" id="chat-input" placeholder="Ask me about your dream safari..." style="flex: 1; padding: 12px 15px; border: 2px solid #D2691E; border-radius: 25px; outline: none; font-size: 14px; background: #FFF8DC; color: #8B4513; font-family: inherit;">
+                        <button id="chat-send" style="background: linear-gradient(135deg, #8B4513, #D2691E); color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3); transition: all 0.3s;">Send</button>
                     </div>
                 </div>
             </div>
@@ -101,14 +102,16 @@
         bubbleDiv.style.wordWrap = 'break-word';
         
         if (sender === 'user') {
-            bubbleDiv.style.background = '#ff6b35';
+            bubbleDiv.style.background = 'linear-gradient(135deg, #8B4513, #D2691E)';
             bubbleDiv.style.color = 'white';
             bubbleDiv.style.borderBottomRightRadius = '4px';
+            bubbleDiv.style.boxShadow = '0 2px 8px rgba(139, 69, 19, 0.2)';
         } else {
-            bubbleDiv.style.background = 'white';
-            bubbleDiv.style.color = '#333';
-            bubbleDiv.style.border = '1px solid #e9ecef';
+            bubbleDiv.style.background = 'linear-gradient(135deg, #FFE4B5, #F0E68C)';
+            bubbleDiv.style.color = '#8B4513';
+            bubbleDiv.style.border = '2px solid #D2691E';
             bubbleDiv.style.borderBottomLeftRadius = '4px';
+            bubbleDiv.style.boxShadow = '0 2px 8px rgba(139, 69, 19, 0.1)';
         }
         
         bubbleDiv.textContent = text;
@@ -127,12 +130,13 @@
         typingDiv.style.justifyContent = 'flex-start';
         
         const typingBubble = document.createElement('div');
-        typingBubble.style.background = 'white';
-        typingBubble.style.border = '1px solid #e9ecef';
-        typingBubble.style.padding = '10px 15px';
+        typingBubble.style.background = 'linear-gradient(135deg, #FFE4B5, #F0E68C)';
+        typingBubble.style.border = '2px solid #D2691E';
+        typingBubble.style.padding = '12px 18px';
         typingBubble.style.borderRadius = '18px';
         typingBubble.style.borderBottomLeftRadius = '4px';
-        typingBubble.innerHTML = '<div style="display: flex; gap: 4px;"><div style="width: 8px; height: 8px; background: #ccc; border-radius: 50%; animation: typing 1.4s infinite ease-in-out;"></div><div style="width: 8px; height: 8px; background: #ccc; border-radius: 50%; animation: typing 1.4s infinite ease-in-out 0.2s;"></div><div style="width: 8px; height: 8px; background: #ccc; border-radius: 50%; animation: typing 1.4s infinite ease-in-out 0.4s;"></div></div>';
+        typingBubble.style.boxShadow = '0 2px 8px rgba(139, 69, 19, 0.1)';
+        typingBubble.innerHTML = '<div style="display: flex; gap: 4px;"><div style="width: 8px; height: 8px; background: #8B4513; border-radius: 50%; animation: typing 1.4s infinite ease-in-out;"></div><div style="width: 8px; height: 8px; background: #8B4513; border-radius: 50%; animation: typing 1.4s infinite ease-in-out 0.2s;"></div><div style="width: 8px; height: 8px; background: #8B4513; border-radius: 50%; animation: typing 1.4s infinite ease-in-out 0.4s;"></div></div>';
         
         typingDiv.appendChild(typingBubble);
         typingDiv.id = 'typing-indicator';
@@ -220,25 +224,66 @@
             30% { transform: translateY(-10px); }
         }
         
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+        
         #chat-toggle:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) !important;
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4) !important;
         }
         
         .suggestion-btn:hover {
-            background: #f8f9fa !important;
-            border-color: #ff6b35 !important;
+            background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+            border-color: #FF8C00 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.2) !important;
         }
         
         #chat-send:hover {
-            background: #e55a2b;
+            background: linear-gradient(135deg, #654321, #8B4513) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4) !important;
+        }
+        
+        #chat-close:hover {
+            background: rgba(255,255,255,0.3) !important;
+            transform: scale(1.1);
         }
     `;
     document.head.appendChild(style);
 
-    // Show notification after 3 seconds if chat is not open
+    // Create audio element for ding sound
+    const dingSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+    
+    // Function to play ding sound
+    function playDing() {
+        dingSound.volume = 0.3;
+        dingSound.play().catch(e => console.log('Audio play failed:', e));
+    }
+    
+    // Show notification with ding sound after 3 seconds if chat is not open
     setTimeout(() => {
         if (!isOpen) {
             notificationBadge.style.display = 'flex';
+            playDing();
         }
     }, 3000);
+    
+    // Play ding when chat is opened
+    const originalToggleChat = toggleChat;
+    toggleChat = function() {
+        if (!isOpen) {
+            playDing();
+        }
+        originalToggleChat();
+    };
 })();
