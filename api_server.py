@@ -110,10 +110,28 @@ If someone asks about booking, services, contact info, or destinations, use the 
     }
     
     try:
+        print(f"Making request to Groq API...")
+        print(f"URL: {url}")
+        print(f"Headers: {headers}")
+        print(f"Data: {data}")
+        
         response = requests.post(url, headers=headers, json=data)
-        response.raise_for_status()
-        return response.json()["choices"][0]["message"]["content"]
+        print(f"Groq API Response Status: {response.status_code}")
+        print(f"Groq API Response Headers: {dict(response.headers)}")
+        
+        if response.status_code != 200:
+            print(f"Groq API Error Response: {response.text}")
+            return f"Sorry, I'm having trouble connecting right now. Please contact us directly at +255625691470 or info@naturewarriorsafricansafaris.co.tz"
+        
+        response_data = response.json()
+        print(f"Groq API Success Response: {response_data}")
+        
+        return response_data["choices"][0]["message"]["content"]
     except requests.exceptions.RequestException as e:
+        print(f"Groq API Request Exception: {e}")
+        return f"Sorry, I'm having trouble connecting right now. Please contact us directly at +255625691470 or info@naturewarriorsafricansafaris.co.tz"
+    except Exception as e:
+        print(f"Groq API General Exception: {e}")
         return f"Sorry, I'm having trouble connecting right now. Please contact us directly at +255625691470 or info@naturewarriorsafricansafaris.co.tz"
 
 @app.route('/api/chat', methods=['POST'])
