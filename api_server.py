@@ -170,7 +170,13 @@ def chat_get():
 @app.route('/api/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
-    return jsonify({'status': 'healthy', 'message': 'API server is running'})
+    api_key_status = "configured" if GROQ_API_KEY else "not configured"
+    return jsonify({
+        'status': 'healthy', 
+        'message': 'API server is running',
+        'api_key_status': api_key_status,
+        'api_key_length': len(GROQ_API_KEY) if GROQ_API_KEY else 0
+    })
 
 if __name__ == '__main__':
     # Run the Flask app
