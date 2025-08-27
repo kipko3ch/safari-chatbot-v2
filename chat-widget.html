@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Chat Widget</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+        }
+
+        /* Chat widget container */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            font-family: inherit;
+        }
+
+        /* Chat button (collapsed state) */
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            transition: transform 0.3s ease;
+        }
+
+        .chat-button.active svg {
+            transform: rotate(180deg);
+        }
+
+        /* Notification badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Chat window (expanded state) */
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .chat-window.active {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Chat header */
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .chat-header-text h3 {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .chat-header-text p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin: 2px 0 0 0;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Chat content */
+        .chat-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.bot {
+            align-items: flex-start;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.bot .message-bubble {
+            background: white;
+            border: 1px solid #e1e5e9;
+            color: #333;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* Welcome message */
+        .welcome-message {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .welcome-message h4 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+
+        .welcome-message p {
+            margin: 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* Quick suggestions */
+        .quick-suggestions {
+            padding: 0 16px 16px;
+            background: #f8f9fa;
+        }
+
+        .suggestions-title {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .suggestion-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .suggestion-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Chat input */
+        .chat-input {
+            padding: 16px;
+            background: white;
+            border-top: 1px solid #e1e5e9;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .chat-input input {
+            flex: 1;
+            border: 1px solid #e1e5e9;
+            border-radius: 20px;
+            padding: 10px 16px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .chat-input input:focus {
+            border-color: #667eea;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .send-button:hover {
+            transform: scale(1.1);
+        }
+
+        .send-button svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 480px) {
+            .chat-widget {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .chat-window {
+                width: calc(100vw - 30px);
+                height: calc(100vh - 120px);
+                right: -15px;
+            }
+
+            .chat-button {
+                width: 55px;
+                height: 55px;
+            }
+
+            .chat-button svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        /* Loading animation */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 14px;
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 18px;
+            max-width: fit-content;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #999;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-widget">
+        <!-- Chat Button -->
+        <button class="chat-button" id="chatButton">
+            <svg viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+            </svg>
+            <div class="notification-badge">!</div>
+        </button>
+
+        <!-- Chat Window -->
+        <div class="chat-window" id="chatWindow">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-avatar">🦁</div>
+                    <div class="chat-header-text">
+                        <h3>Safari Assistant</h3>
+                        <p>Online • Ready to help</p>
+                    </div>
+                </div>
+                <button class="close-button" id="closeButton">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Chat Content -->
+            <div class="chat-content">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="welcome-message">
+                        <h4>🌍 How can we help you today?</h4>
+                        <p>Ask about safaris, Kilimanjaro treks, Zanzibar beaches, or booking!</p>
+                    </div>
+                </div>
+
+                <!-- Quick Suggestions -->
+                <div class="quick-suggestions" id="quickSuggestions">
+                    <div class="suggestions-title">💡 Popular Questions:</div>
+                    <div class="suggestion-buttons">
+                        <button class="suggestion-btn" data-question="What safari packages do you offer?">Safari Packages</button>
+                        <button class="suggestion-btn" data-question="How do I book a Kilimanjaro trek?">Kilimanjaro Trek</button>
+                        <button class="suggestion-btn" data-question="Best time to visit Serengeti?">Best Time to Visit</button>
+                        <button class="suggestion-btn" data-question="Zanzibar beach holiday options?">Zanzibar Holidays</button>
+                        <button class="suggestion-btn" data-question="What are your contact details?">Contact Info</button>
+                        <button class="suggestion-btn" data-question="What's included in your packages?">What's Included</button>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Ask about safaris, destinations, or booking...">
+                    <button class="send-button" id="sendButton">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ChatWidget {
+            constructor() {
+                this.chatButton = document.getElementById('chatButton');
+                this.chatWindow = document.getElementById('chatWindow');
+                this.closeButton = document.getElementById('closeButton');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.chatMessages = document.getElementById('chatMessages');
+                this.quickSuggestions = document.getElementById('quickSuggestions');
+                
+                this.isOpen = false;
+                this.messages = [];
+                this.apiServerUrl = 'https://safari-chat-api.onrender.com/api/chat'; // Secure API server endpoint
+                
+                this.knowledgeBase = `
+COMPANY: Nature Warriors African Safaris
+LOCATION: Arusha, Tanzania
+
+CONTACT INFORMATION:
+- Phone: +255625691470 | +255622127770
+- Email: info@naturewarriorsafricansafaris.co.tz
+- Location: Arusha, Tanzania
+
+ABOUT US:
+Nature Warriors African Safaris is your trusted partner for authentic Tanzanian safaris and beach holidays. We create personalized travel experiences that connect you with Tanzania's wildlife, landscapes, and cultures.
+
+MAIN DESTINATIONS & SERVICES:
+
+1. SERENGETI NATIONAL PARK
+- Great Migration Experience (3 Days/2 Nights) - Witness the world-famous wildebeest migration
+- Best time: July-September for migration
+- Wildlife: Wildebeest, zebras, lions, cheetahs, leopards
+
+2. NGORONGORO CRATER
+- Ngorongoro Crater Tour (1 Day) - Descend into the crater for full-day safari
+- Wildlife: Lions, rhinos, elephants, flamingos, hippos
+
+3. ZANZIBAR ISLAND - Spice Island Paradise
+- Nungwi Beach Retreat (3 Days/2 Nights) - Pristine beaches
+- Stone Town Heritage Tour (Half Day) - UNESCO World Heritage site
+- Zanzibar Spice Tour (Half Day) - Discover exotic spices
+- Dolphin Watching Tour (Half Day) - Swim with dolphins
+- Sunset Dhow Cruise (2 Hours) - Traditional dhow sailing
+
+4. MOUNT KILIMANJARO - Africa's Highest Peak (5,895m)
+Climbing Routes Available:
+- Machame Route "Whiskey Route" (6-7 days) - Most popular, scenic
+- Marangu Route "Coca-Cola Route" (5-6 days) - Cheapest, hut accommodation
+- Lemosho Route (7-8 days) - Premium, stunning views
+- Rongai Route (6-7 days) - Quieter, drier side
+
+5. SELOUS GAME RESERVE
+- Rufiji River Boat Safari (Half Day) - Unique boat safaris
+- Selous Game Drive (1 Day) - Elephants, lions, wild dogs
+
+BOOKING PROCESS:
+1. Contact us via phone (+255625691470 or +255622127770) or email (info@naturewarriorsafricansafaris.co.tz)
+2. Custom planning - We create personalized itinerary
+3. Confirmation - Review and confirm with deposit
+4. Adventure begins - Arrive in Tanzania for worry-free adventure
+
+WHAT'S INCLUDED:
+- Expert local guides
+- Premium 4x4 safari vehicles
+- Quality accommodations
+- 24/7 support during trip
+- All meals, park fees, transfers (package dependent)
+                `;
+                
+                this.initializeEventListeners();
+                this.hideNotificationAfterDelay();
+            }
+
+            initializeEventListeners() {
+                this.chatButton.addEventListener('click', () => this.toggleChat());
+                this.closeButton.addEventListener('click', () => this.closeChat());
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+
+                // Quick suggestion buttons
+                document.querySelectorAll('.suggestion-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const question = btn.getAttribute('data-question');
+                        this.sendMessage(question);
+                    });
+                });
+            }
+
+            toggleChat() {
+                if (this.isOpen) {
+                    this.closeChat();
+                } else {
+                    this.openChat();
+                }
+            }
+
+            openChat() {
+                this.isOpen = true;
+                this.chatWindow.classList.add('active');
+                this.chatButton.classList.add('active');
+                this.messageInput.focus();
+                
+                // Hide notification badge
+                const badge = document.querySelector('.notification-badge');
+                if (badge) badge.style.display = 'none';
+            }
+
+            closeChat() {
+                this.isOpen = false;
+                this.chatWindow.classList.remove('active');
+                this.chatButton.classList.remove('active');
+            }
+
+            hideNotificationAfterDelay() {
+                setTimeout(() => {
+                    const badge = document.querySelector('.notification-badge');
+                    if (badge && !this.isOpen) {
+                        badge.style.display = 'none';
+                    }
+                }, 10000); // Hide after 10 seconds
+            }
+
+            async sendMessage(text = null) {
+                const message = text || this.messageInput.value.trim();
+                if (!message) return;
+
+                // Clear input and hide suggestions
+                this.messageInput.value = '';
+                this.quickSuggestions.style.display = 'none';
+
+                // Add user message
+                this.addMessage(message, 'user');
+
+                // Show typing indicator
+                this.showTypingIndicator();
+
+                try {
+                    // Get response from Groq API
+                    const response = await this.getGroqResponse(message);
+                    this.hideTypingIndicator();
+                    this.addMessage(response, 'bot');
+                } catch (error) {
+                    this.hideTypingIndicator();
+                    this.addMessage("Sorry, I'm having trouble connecting right now. Please contact us directly at +255625691470 or info@naturewarriorsafricansafaris.co.tz", 'bot');
+                }
+            }
+
+            addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = 'message-bubble';
+                bubbleDiv.textContent = text;
+                
+                messageDiv.appendChild(bubbleDiv);
+                this.chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message bot';
+                typingDiv.id = 'typing-indicator';
+                
+                const typingBubble = document.createElement('div');
+                typingBubble.className = 'typing-indicator';
+                typingBubble.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+                
+                typingDiv.appendChild(typingBubble);
+                this.chatMessages.appendChild(typingDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            hideTypingIndicator() {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            async getGroqResponse(userMessage) {
+                const response = await fetch(this.apiServerUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: userMessage
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+
+                const data = await response.json();
+                return data.response;
+            }
+        }
+
+        // Initialize chat widget when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new ChatWidget();
+        });
+    </script>
+</body>
+</html>
