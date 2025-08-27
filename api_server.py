@@ -119,6 +119,13 @@ If someone asks about booking, services, contact info, or destinations, use the 
 def chat():
     """API endpoint for chat requests"""
     try:
+        # Check if API key is available
+        if not GROQ_API_KEY:
+            return jsonify({
+                'error': 'API key not configured',
+                'response': "Sorry, I'm having trouble connecting right now. Please contact us directly at +255625691470 or info@naturewarriorsafricansafaris.co.tz"
+            }), 500
+        
         data = request.get_json()
         user_message = data.get('message', '')
         
@@ -134,10 +141,19 @@ def chat():
         })
         
     except Exception as e:
+        print(f"Error in chat endpoint: {e}")
         return jsonify({
             'error': 'Internal server error',
             'response': "Sorry, I'm having trouble connecting right now. Please contact us directly at +255625691470 or info@naturewarriorsafricansafaris.co.tz"
         }), 500
+
+@app.route('/api/chat', methods=['GET'])
+def chat_get():
+    """Handle GET requests to chat endpoint"""
+    return jsonify({
+        'error': 'Method not allowed',
+        'message': 'Use POST method to send chat messages'
+    }), 405
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
