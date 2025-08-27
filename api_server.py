@@ -102,7 +102,7 @@ If someone asks about booking, services, contact info, or destinations, use the 
     ]
     
     data = {
-        "model": "llama-3.1-70b-versatile",
+        "model": "llama-3.1-8b-instant",
         "messages": messages,
         "temperature": 0.7,
         "max_tokens": 400,
